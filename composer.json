@@ -1,0 +1,14 @@
+{
+    "name": "katin.dev/weather",
+    "description": "Weather backend part",
+    "type": "project",
+    "authors": [
+        {
+            "name": "katin-dev",
+            "email": "katin.dev@gmail.com"
+        }
+    ],
+    "require": {
+        "workerman/workerman": "^3.5"
+    }
+}
