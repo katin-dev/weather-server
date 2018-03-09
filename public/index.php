@@ -14,7 +14,7 @@ $app = new Application();
 
 // Запрос на получение всех данных по CO2 за указанный промежуток времени (в днях)
 $app->get('/co2', function (Request $request) use ($db) {
-    $daysLimit = $request->get('days', 5);   // По-умолчанию, показывем данные за последние 5 дней
+    $daysLimit = $request->get('days', 3);   // По-умолчанию, показывем данные за последние 5 дней
     $startDate = date('Y-m-d H:i:s', strtotime("-$daysLimit days"));
 
     $sql = "SELECT * FROM weather WHERE date >= :start_date ORDER BY date";
@@ -37,16 +37,19 @@ $app->get('/co2', function (Request $request) use ($db) {
     return $response;
 });
 
+$app->get('/', function (Request $request) {
+    if ($value = $request->get('value')) {
+        $socket = stream_socket_client('tcp://127.0.0.1:8082');
+
+        fwrite($socket, json_encode([
+            'date' => date('c'),
+            'co2'  => intval($_GET['value']),
+        ]));
+
+        return "<b>Sent</b>";
+    }
+
+    return 'Index';
+});
+
 $app->run();
-
-// Отправим новое значение клиентам по WS
-if (isset($_GET['value'])) {
-    $socket = stream_socket_client('tcp://127.0.0.1:8082');
-
-    fwrite($socket, json_encode([
-        'label' => date('d.H:i'),
-        'value' => intval($_GET['value'])
-    ]));
-
-    echo "<b>Sent</b>";
-}
