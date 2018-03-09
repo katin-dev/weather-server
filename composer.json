@@ -9,6 +9,7 @@
         }
     ],
     "require": {
-        "workerman/workerman": "^3.5"
+        "workerman/workerman": "^3.5",
+        "silex/silex": "^2.2"
     }
 }
