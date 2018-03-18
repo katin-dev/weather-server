@@ -8,7 +8,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $config = require __DIR__ . '/../app/config.php';
 
-$db = new PDO('mysql:host=127.0.0.1;dbname=weather', $config['db']['username'], $config['db']['password']);
+$db = new PDO('mysql:host=127.0.0.1;dbname=' . $config['db']['dbname'], $config['db']['username'], $config['db']['password']);
 
 $app = new Application();
 
@@ -49,7 +49,7 @@ $app->get('/', function (Request $request) {
         return "<b>Sent</b>";
     }
 
-    return 'Index';
+    return file_get_contents('index.html');
 });
 
 $app->run();
